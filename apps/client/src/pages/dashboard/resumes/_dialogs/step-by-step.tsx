@@ -30,7 +30,7 @@ export const StepByStep = () => {
  
     useEffect(() => {
         const timeoutFunc = setTimeout(() => {
-            setApiKey("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"); 
+            setApiKey("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"); 
         }, 1000);
         return () => {
             clearTimeout(timeoutFunc)
