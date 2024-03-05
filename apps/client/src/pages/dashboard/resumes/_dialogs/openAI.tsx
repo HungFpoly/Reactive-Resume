@@ -323,17 +323,10 @@ export const OpenAIDialog = () => {
                 </Button>}
                 {isCreate && step == 1 && (
                   <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button type="button" size="icon" className="rounded-l-none border-l">
-                        <CaretDown />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent side="right" align="center">
-                      <DropdownMenuItem onClick={onCreateSample}>
-                        <Flask className="mr-2" />
-                        {t`Create Sample Resume`}
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
+                    <div className="flex cursor-pointer " onClick={onCreateSample}>
+                      <Flask className="mr-2" />
+                      {t`Create Sample Resume`}
+                    </div>
                   </DropdownMenu>
                 )}
               </div>
