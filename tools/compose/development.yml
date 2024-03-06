@@ -41,13 +41,13 @@ services:
 
   # Chrome Browser (for printing and previews)
   chrome:
-    image: browserless/chrome:1.61.0-puppeteer-21.4.1
+    image: browserless/chrome:latest
     restart: unless-stopped
     ports:
       - ${CHROME_PORT:-8080}:3000
     environment:
       KEEP_ALIVE: true
-      CONNECTION_TIMEOUT: 10000
+      CONNECTION_TIMEOUT: 50000
       EXIT_ON_HEALTH_FAILURE: true
       PRE_REQUEST_HEALTH_CHECK: true
       TOKEN: ${CHROME_TOKEN:-chrome_token}

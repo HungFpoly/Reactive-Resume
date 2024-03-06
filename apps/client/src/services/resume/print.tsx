@@ -6,10 +6,7 @@ import { toast } from "@/client/hooks/use-toast";
 import { axios } from "@/client/libs/axios";
 
 export const printResume = async (data: { id: string }) => {
-  console.log(data);
-  
   const response = await axios.get<UrlDto>(`/resume/print/${data.id}`);
-console.log(response.data);
 
   return response.data;
 };
