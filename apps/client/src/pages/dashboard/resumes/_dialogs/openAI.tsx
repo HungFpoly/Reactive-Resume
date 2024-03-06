@@ -105,6 +105,8 @@ export const OpenAIDialog = () => {
 
   const onPdfExport = async () => {
     const { resume } = useResumeStore.getState();
+    console.log(resume);
+    
     const { url } = await printResume({ id: resume.id });
 
     const openInNewTab = (url: string) => {
@@ -321,14 +323,6 @@ export const OpenAIDialog = () => {
                 >
                   {t`Next`}
                 </Button>}
-                {isCreate && step == 1 && (
-                  <DropdownMenu>
-                    <div className="flex cursor-pointer " onClick={onCreateSample}>
-                      <Flask className="mr-2" />
-                      {t`Create Sample Resume`}
-                    </div>
-                  </DropdownMenu>
-                )}
               </div>
             </DialogFooter>}
           </form>

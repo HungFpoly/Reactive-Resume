@@ -15,8 +15,6 @@ export const createResume = async (data: CreateResumeDto) => {
 };
 
 export const useCreateResume = () => {
-  console.log('khiughkdfjghdfkj');
-  
   const {
     error,
     isPending: loading,
