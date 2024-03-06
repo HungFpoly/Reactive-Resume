@@ -12,8 +12,6 @@ export class BrowserHealthIndicator extends HealthIndicator {
   async isHealthy(): Promise<HealthIndicatorResult> {
     try {
       const version = await this.printerService.getVersion();
-      console.log(version);
-      
 
       return this.getStatus("browser", true, { version });
     } catch (error) {
