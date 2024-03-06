@@ -109,6 +109,9 @@ export const OpenAIDialog = () => {
     
     const { url } = await printResume({ id: resume.id });
 
+    console.log(url);
+    
+
     const openInNewTab = (url: string) => {
       const win = window.open(url, "_blank");
       if (win) win.focus();
