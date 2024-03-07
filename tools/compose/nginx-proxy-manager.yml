@@ -8,14 +8,16 @@ services:
   postgres:
     image: postgres:15-alpine
     restart: unless-stopped
+    ports:
+    - ${POSTGRES_PORT:-5432}:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d  ${POSTGRES_DB:-postgres}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -28,11 +30,13 @@ services:
     volumes:
       - minio_data:/data
     environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_ADDRESS: :9000
+      MINIO_CONSOLE_ADDRESS: :9001
+      MINIO_ROOT_USER: ${STORAGE_ACCESS_KEY:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${STORAGE_SECRET_KEY:-minioadmin}
     labels:
       - traefik.enable=true
-      - traefik.http.routers.storage.rule=Host(`storage.example.com`)
+      - traefik.http.routers.storage.rule=Host(`storage.app.cveuropass.eu`)
       - traefik.http.routers.storage.entrypoints=websecure
       - traefik.http.routers.storage.tls.certresolver=letsencrypt
       - traefik.http.services.storage.loadbalancer.server.port=9000
@@ -41,16 +45,20 @@ services:
   chrome:
     image: browserless/chrome:1.61.0-puppeteer-21.4.1
     restart: unless-stopped
+    ports:
+    - ${CHROME_PORT:-8080}:3000
     environment:
-      TOKEN: chrome_token
+      KEEP_ALIVE: true
+      CONNECTION_TIMEOUT: 10000
       EXIT_ON_HEALTH_FAILURE: true
       PRE_REQUEST_HEALTH_CHECK: true
+      TOKEN: ${CHROME_TOKEN:-chrome_token}
 
   # Redis (for cache & server session management)
   redis:
     image: redis:alpine
     restart: unless-stopped
-    command: redis-server --save 60 1 --loglevel warning --requirepass password
+    command: redis-server --save 60 1 --loglevel warning --requirepass ${REDIS_PASSWORD:-password}
     volumes:
       - redis_data:/data
 
@@ -73,7 +81,7 @@ services:
 
       # -- Printer (Chrome) --
       CHROME_TOKEN: chrome_token
-      CHROME_URL: wss://printer.example.com
+      CHROME_URL: wss://printer.app.cveuropass.eu
 
       # -- Database (Postgres) --
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres
@@ -83,7 +91,7 @@ services:
       REFRESH_TOKEN_SECRET: refresh_token_secret
 
       # -- Emails --
-      MAIL_FROM: noreply@example.com
+      MAIL_FROM: noreply@app.cveuropass.eu
       # SMTP_URL: smtp://user:pass@smtp:587 # Optional
 
       # -- Storage (Minio) --
@@ -118,19 +126,6 @@ services:
       GOOGLE_CLIENT_ID: google_client_id
       GOOGLE_CLIENT_SECRET: google_client_secret
       GOOGLE_CALLBACK_URL: https://app.cveuropass.eu/api/auth/google/callback
-
-  nginx:
-    image: jc21/nginx-proxy-manager
-    restart: always
-    ports:
-      - 80:80
-      - 443:443
-      - 81:81 # Port 81 is used for Proxy Manager's Web UI
-    volumes:
-      - nginx_data:/data
-      - letsencrypt_data:/etc/letsencrypt
-    environment:
-      DISABLE_IPV6: true
 
 volumes:
   minio_data:
