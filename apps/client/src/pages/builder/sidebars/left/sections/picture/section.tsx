@@ -34,8 +34,6 @@ console.log(isValidUrl);
   const onSelectImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
-      console.log(file);
-      
       const response = await uploadImage(file);
       const url = response.data;
 
