@@ -24,6 +24,9 @@ export const ExportSection = () => {
     const { resume } = useResumeStore.getState();
     const { url } = await printResume({ id: resume.id });
 
+    console.log("hung", url);
+    
+
     const openInNewTab = (url: string) => {
       const win = window.open(url, "_blank");
       if (win) win.focus();
