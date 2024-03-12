@@ -22,6 +22,8 @@ export const ExportSection = () => {
 
   const onPdfExport = async () => {
     const { resume } = useResumeStore.getState();
+    console.log("resume", resume);
+    
     const { url } = await printResume({ id: resume.id });
 
     console.log("hung", url);
