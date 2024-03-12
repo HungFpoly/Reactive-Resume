@@ -80,3 +80,4 @@ volumes:
   redis_data:
   postgres_data:
   nginx_data:
+  letsencrypt_data:
