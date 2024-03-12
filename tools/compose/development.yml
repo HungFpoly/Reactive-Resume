@@ -60,24 +60,9 @@ services:
     ports:
       - ${REDIS_PORT:-6379}:6379
     volumes:
-      - redis_data:/data
-  # nginx
-  nginx:
-    image: jc21/nginx-proxy-manager
-    restart: always
-    ports:
-      - 80:80
-      - 443:443
-      - 81:81 # Port 81 is used for Proxy Manager's Web UI
-    volumes:
-      - nginx_data:/data
-      - letsencrypt_data:/etc/letsencrypt
-    environment:
-      DISABLE_IPV6: true
+      - redis_data:/data 
 
 volumes:
   minio_data:
   redis_data:
   postgres_data:
-  nginx_data:
-  letsencrypt_data:
