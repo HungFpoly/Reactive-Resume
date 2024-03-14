@@ -9,7 +9,7 @@ export const createSummary = async (data: any) => {
     if(key === 'headline')  return data[key];
   }).join(', ')
   const lg = localStorage.getItem('locale');
-  const prompt = `I am applying for a Job, SEO ${text}, write me professional Summary for CV, Language:${lg ? lg : 'English'}`;
+  const prompt = `I am applying for a Job, ${text}, write me professional Summary for CV, Language:${lg ? lg : 'English'}`;
 
   const result = await openai().chat.completions.create({
     messages: [{ role: "user", content: prompt }],
